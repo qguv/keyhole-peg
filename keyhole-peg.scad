@@ -3,6 +3,7 @@ fudge = 0.001;
 
 module outer(wall, hole_d, risen, keyhole_d) {
     clearance = max((keyhole_d - risen)/2, wall);
+    pillar_base = min(keyhole_d - 2, hole_d);
     pillar_d = hole_d + wall*2;
 
     hull() {
@@ -21,12 +22,12 @@ module outer(wall, hole_d, risen, keyhole_d) {
         risen-fudge
     ]) cylinder(
         h=risen+fudge,
-        d1=hole_d,
+        d1=pillar_base,
         d2=keyhole_d
     );
 }
 
-module all(wall=2, hole_d=3, risen=2, keyhole_d=5) {
+module all(wall=2, hole_d=4, risen=2, keyhole_d=5) {
     difference() {
 
         // outer
