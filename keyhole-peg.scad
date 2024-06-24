@@ -41,13 +41,13 @@ module all(wall=2, hole_d=4, keyhole_d=5, screw_head_d=8, screw_head_h=4) {
 
         // hole
         translate([0,0,-fudge]) cylinder(
-            h=screw_head_h + wall + 2*fudge,
+            h=fudge + wall + screw_head_h + fudge,
             d=hole_d
         );
 
         // countersink
-        translate([0, 0, wall - fudge]) cylinder(
-            h=screw_head_h + 2*fudge,
+        translate([0, 0, wall]) cylinder(
+            h=screw_head_h + fudge,
             d1=hole_d,
             d2=screw_head_d
         );
