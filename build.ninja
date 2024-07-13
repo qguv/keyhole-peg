@@ -1,0 +1,9 @@
+rule render3d
+    command = openscad -o $out $in
+
+rule render2d
+    command = openscad -D PNG=1 --colorscheme BeforeDawn -o $out $in
+
+build keyhole-peg.3mf: render3d keyhole-peg.scad
+build keyhole-peg.stl: render3d keyhole-peg.scad
+build keyhole-peg.png: render2d keyhole-peg.scad
