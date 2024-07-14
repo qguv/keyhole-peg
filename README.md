@@ -4,7 +4,7 @@ _also available [on Printables](https://www.printables.com/model/942408-keyhole-
 
 ![3d render of object](https://qguv.github.io/keyhole-peg/img/keyhole-peg.png)
 
-Peg to hold an object with a small mounting hole (e.g. the TL-SG108E network switch) using a screw with a larger head.
+Customizable, 3d-printable model for a peg to hold an object with a small mounting hole (e.g. the TL-SG108E network switch) using a screw with a larger head.
 
 ## building
 
