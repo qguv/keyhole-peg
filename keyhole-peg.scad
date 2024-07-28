@@ -1,6 +1,8 @@
 Wall=2;
+Pin_height=3;
 Hole_diameter=4;
-Keyhole_diameter=5;
+Pin_top_diameter=5;
+Pin_thin_diameter=3;
 Screw_head_diameter=8;
 Screw_head_height=4;
 
@@ -8,29 +10,40 @@ Screw_head_height=4;
 Punch = 0.001;
 $fn = 90;
 
-module outer() {
+module body() {
     risen = Wall + Screw_head_height;
-    pin_base = min(Keyhole_diameter - 2, Hole_diameter);
-    screw_clearance_d = Screw_head_diameter/2 + Wall;
-
     hull() {
         cylinder(h=risen, d=Screw_head_diameter + Wall*2);
         
-        translate([screw_clearance_d + Keyhole_diameter/2, 0, 0])
+        translate([screw_clearance_d + Pin_top_diameter/2, 0, 0])
         cylinder(
             h=risen,
-            d=Keyhole_diameter
+            d=Pin_top_diameter
         );
     }
-    
-    translate([
-        screw_clearance_d + Keyhole_diameter/2,
-        0,
-        Wall + Screw_head_height - Punch
-    ]) cylinder(
-        h=Wall+Punch,
-        d1=pin_base,
-        d2=Keyhole_diameter
+}
+
+module pin() {
+    pin_bottom_center = [screw_clearance_d + Pin_top_diameter/2, 0, Wall + Screw_head_height];
+
+    // center rod
+    translate(pin_bottom_center + [0,0,-Punch]) cylinder(
+        h=Pin_height+Punch,
+        d=Pin_thin_diameter
+    );
+
+    // top flare
+    translate(pin_bottom_center + [0,0,Pin_height/2]) cylinder(
+        h = Pin_height/2,
+        d2=Pin_top_diameter,
+        d1=Pin_thin_diameter
+    );
+
+    // bottom flare
+    translate(pin_bottom_center + [0,0,-Punch]) cylinder(
+        h = Pin_height/2+Punch,
+        d2=Pin_thin_diameter,
+        d1=Pin_top_diameter
     );
 }
 
@@ -52,9 +65,15 @@ module screw_negative() {
 
 module all() {
     difference() {
-        outer();
+
+        union() {
+            body();
+            pin();
+        }
+
         screw_negative();
     }
 }
 
+screw_clearance_d = Screw_head_diameter/2 + Wall;
 all();
