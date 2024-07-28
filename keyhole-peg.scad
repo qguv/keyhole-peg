@@ -1,56 +1,59 @@
-$fn = 90;
-fudge = 0.001;
+Wall=2;
+Hole_diameter=4;
+Keyhole_diameter=5;
+Screw_head_diameter=8;
+Screw_head_height=4;
 
-module outer(wall, hole_d, keyhole_d, screw_head_d, screw_head_h) {
-    risen = wall + screw_head_h;
-    pin_base = min(keyhole_d - 2, hole_d);
-    screw_clearance_d = screw_head_d/2 + wall;
+/* [Advanced] */
+Punch = 0.001;
+$fn = 90;
+
+module outer() {
+    risen = Wall + Screw_head_height;
+    pin_base = min(Keyhole_diameter - 2, Hole_diameter);
+    screw_clearance_d = Screw_head_diameter/2 + Wall;
 
     hull() {
-        cylinder(h=risen, d=screw_head_d + wall*2);
+        cylinder(h=risen, d=Screw_head_diameter + Wall*2);
         
-        translate([screw_clearance_d + keyhole_d/2, 0, 0])
+        translate([screw_clearance_d + Keyhole_diameter/2, 0, 0])
         cylinder(
             h=risen,
-            d=keyhole_d
+            d=Keyhole_diameter
         );
     }
     
     translate([
-        screw_clearance_d + keyhole_d/2,
+        screw_clearance_d + Keyhole_diameter/2,
         0,
-        wall + screw_head_h - fudge
+        Wall + Screw_head_height - Punch
     ]) cylinder(
-        h=wall+fudge,
+        h=Wall+Punch,
         d1=pin_base,
-        d2=keyhole_d
+        d2=Keyhole_diameter
     );
 }
 
-module all(wall=2, hole_d=4, keyhole_d=5, screw_head_d=8, screw_head_h=4) {
+module screw_negative() {
+
+    // hole
+    translate([0,0,-Punch]) cylinder(
+        h=Punch + Wall + Screw_head_height + Punch,
+        d=Hole_diameter
+    );
+
+    // countersink
+    translate([0, 0, Wall]) cylinder(
+        h=Screw_head_height + Punch,
+        d1=Hole_diameter,
+        d2=Screw_head_diameter
+    );
+}
+
+module all() {
     difference() {
-
-        // outer
-        outer(
-            wall=wall,
-            hole_d=hole_d,
-            keyhole_d=keyhole_d,
-            screw_head_d=screw_head_d,
-            screw_head_h=screw_head_h
-        );
-
-        // hole
-        translate([0,0,-fudge]) cylinder(
-            h=fudge + wall + screw_head_h + fudge,
-            d=hole_d
-        );
-
-        // countersink
-        translate([0, 0, wall]) cylinder(
-            h=screw_head_h + fudge,
-            d1=hole_d,
-            d2=screw_head_d
-        );
+        outer();
+        screw_negative();
     }
 }
 
