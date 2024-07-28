@@ -1,0 +1,16 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "raspberry pi case": {
+            "$fn": "90",
+            "Hole_diameter": "4",
+            "Pin_height": "3",
+            "Pin_thin_diameter": "2",
+            "Pin_top_diameter": "4",
+            "Punch": "0.001",
+            "Screw_head_diameter": "8",
+            "Screw_head_height": "4",
+            "Wall": "2"
+        }
+    }
+}
